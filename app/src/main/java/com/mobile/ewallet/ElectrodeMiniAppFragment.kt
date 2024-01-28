@@ -17,7 +17,7 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
     private var mListener: OnFragmentInteractionListener? = null
     private var mElectrodeReactActivityListener: ElectrodeReactActivityListener? = null
     private var ernRoute: ErnRoute? = null
-    private val miniAppName: String?
+    open val miniAppName: String?
         /**
          * Registered component name of your MiniApp
          *
@@ -71,9 +71,9 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
     @CallSuper
     override fun onResume() {
         super.onResume()
-        if (ernRoute!!.navBar != null) {
-            mElectrodeReactActivityListener!!.updateTitle(ernRoute!!.navBar!!.title)
-        }
+//        if (ernRoute!!.navBar != null) {
+//            mElectrodeReactActivityListener!!.updateTitle(ernRoute!!.navBar!!.title)
+//        }
     }
 
     fun onButtonPressed(uri: Uri?) {
