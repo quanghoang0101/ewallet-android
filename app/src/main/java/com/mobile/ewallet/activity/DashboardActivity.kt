@@ -1,52 +1,156 @@
 package com.mobile.ewallet.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.mobile.ewallet.R
-import com.mobile.ewallet.fragment.HomeFragment
-import com.mobile.ewallet.fragment.SettingFragment
-import com.mobile.ewallet.fragment.StatisticFragment
-import com.mobile.ewallet.fragment.WalletFragment
+import com.mobile.ewallet.ui.HomeUi
 
-class DashboardActivity: AppCompatActivity() {
-    private lateinit var bottomNav : BottomNavigationView
+class DashboardActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
-
-        loadFragment(HomeFragment())
-        bottomNav = findViewById(R.id.bottomNav)
-        bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> {
-                    loadFragment(HomeFragment())
-                    true
-                }
-
-                R.id.wallet -> {
-                    loadFragment(WalletFragment())
-                    true
-                }
-
-                R.id.statistic -> {
-                    loadFragment(StatisticFragment())
-                    true
-                }
-
-                R.id.settings -> {
-                    loadFragment(SettingFragment())
-                    true
-                }
-
-                else -> { false}
+        setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                ContentApp()
             }
         }
     }
-    private fun loadFragment(fragment: Fragment){
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container,fragment)
-        transaction.commit()
+}
+
+@Composable
+fun ContentApp() {
+    val screens = listOf(
+        Screen.Home,
+        Screen.Wallet,
+        Screen.Statistic,
+        Screen.Setting,
+    )
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
+                screens.forEach { screen ->
+                    AddItem(screen, currentDestination, navController)
+                }
+            }
+        },
+        content = { padding ->
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                NavHost(navController, startDestination = Screen.Home.route, Modifier.padding(padding)) {
+                    composable(Screen.Home.route) { HomeUi(navController) }
+                    composable(Screen.Wallet.route) { Wallet(navController) }
+                    composable(Screen.Statistic.route) { Statistic(navController) }
+                    composable(Screen.Setting.route) { Setting(navController) }
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun RowScope.AddItem(screen: Screen, currentDestination: NavDestination?, navController: NavHostController) {
+    val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+    val color = if (selected) Color(0xFF0C41E1) else Color.LightGray
+
+    BottomNavigationItem(
+        icon = {
+            Image(
+                painterResource(id = screen.icon),
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(color)
+            )
+        },
+        label = {
+            Text(stringResource(screen.resourceId), color = color)
+        },
+        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+        onClick = {
+            navController.navigate(screen.route) {
+                // Pop up to the start destination of the graph to
+                // avoid building up a large stack of destinations
+                // on the back stack as users select items
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                // Avoid multiple copies of the same destination when
+                // reselecting the same item
+                launchSingleTop = true
+                // Restore state when reselecting a previously selected item
+                restoreState = true
+            }
+        },
+        modifier = Modifier.padding(8.dp)
+    )
+
+}
+@Composable
+fun <NavHostController> Statistic(navController: NavHostController) {
+    Column {
     }
+}
+
+@Composable
+fun Setting(navController: NavHostController) {
+    Column {
+    }
+}
+
+@Composable
+fun <NavHostController> Wallet(navHostController: NavHostController) {
+    Column {
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ContentAppPreview() {
+    ContentApp()
+}
+
+sealed class Screen(val route: String, @DrawableRes val icon: Int, @StringRes val resourceId: Int) {
+    data object Home : Screen("home", R.drawable.ic_action_home, R.string.home)
+    data object Wallet : Screen("wallet", R.drawable.ic_action_wallet, R.string.wallet)
+    data object Statistic : Screen("statistic", R.drawable.ic_action_analytics,  R.string.statistic)
+    data object Setting : Screen("wallet",R.drawable.ic_action_account_setting, R.string.setting)
 }
