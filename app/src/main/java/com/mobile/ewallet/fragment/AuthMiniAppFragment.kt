@@ -1,9 +1,7 @@
 package com.mobile.ewallet.fragment
 
 import android.os.Bundle
-import com.mobile.ewallet.ElectrodeMiniAppFragment
 import com.walmartlabs.ern.container.miniapps.MiniAppsConfig.MiniApps
-
 
 class AuthMiniAppFragment: ElectrodeMiniAppFragment() {
     /**

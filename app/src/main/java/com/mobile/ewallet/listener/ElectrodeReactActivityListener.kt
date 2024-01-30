@@ -1,4 +1,4 @@
-package com.mobile.ewallet
+package com.mobile.ewallet.listener
 
 import com.walmartlabs.ern.container.ElectrodeReactActivityDelegate
 

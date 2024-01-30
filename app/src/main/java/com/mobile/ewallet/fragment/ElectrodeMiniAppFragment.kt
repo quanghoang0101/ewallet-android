@@ -1,4 +1,4 @@
-package com.mobile.ewallet
+package com.mobile.ewallet.fragment
 
 import android.content.Context
 import android.net.Uri
@@ -11,6 +11,7 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import apis.NavigationApiRequestHandler.ERN_ROUTE
 import com.ewalletnavigation.ern.model.ErnRoute
+import com.mobile.ewallet.listener.ElectrodeReactActivityListener
 import com.walmartlabs.electrode.reactnative.bridge.helpers.Logger
 
 abstract class ElectrodeMiniAppFragment() : Fragment() {
