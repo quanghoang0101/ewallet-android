@@ -27,8 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -61,14 +59,11 @@ fun ContentApp() {
         Screen.Setting,
     )
     val navController = rememberNavController()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-
     Scaffold(
         bottomBar = {
             BottomNavigation(backgroundColor = MaterialTheme.colors.background) {
                 screens.forEach { screen ->
-                    AddItem(screen, currentDestination, navController)
+                    AddItem(screen, navController)
                 }
             }
         },
@@ -89,8 +84,10 @@ fun ContentApp() {
 }
 
 @Composable
-fun RowScope.AddItem(screen: Screen, currentDestination: NavDestination?, navController: NavHostController) {
-    val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+fun RowScope.AddItem(screen: Screen,  navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val selected = currentRoute == screen.route
     val color = if (selected) Color(0xFF0C41E1) else Color.LightGray
 
     BottomNavigationItem(
@@ -104,7 +101,9 @@ fun RowScope.AddItem(screen: Screen, currentDestination: NavDestination?, navCon
         label = {
             Text(stringResource(screen.resourceId), color = color)
         },
-        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+        selectedContentColor = Color.White,
+        unselectedContentColor = Color.White.copy(0.4f),
+        selected = currentRoute == screen.route,
         onClick = {
             navController.navigate(screen.route) {
                 // Pop up to the start destination of the graph to
@@ -152,5 +151,5 @@ sealed class Screen(val route: String, @DrawableRes val icon: Int, @StringRes va
     data object Home : Screen("home", R.drawable.ic_action_home, R.string.home)
     data object Wallet : Screen("wallet", R.drawable.ic_action_wallet, R.string.wallet)
     data object Statistic : Screen("statistic", R.drawable.ic_action_analytics,  R.string.statistic)
-    data object Setting : Screen("wallet",R.drawable.ic_action_account_setting, R.string.setting)
+    data object Setting : Screen("setting",R.drawable.ic_action_account_setting, R.string.setting)
 }

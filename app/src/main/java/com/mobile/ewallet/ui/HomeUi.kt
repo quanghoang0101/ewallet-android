@@ -87,7 +87,7 @@ fun Header() {
         title = {
             Column {
                 Text(text = "Good Morning!", color = Color(0xFFb4abaa), fontSize = 13.sp, fontWeight = FontWeight.Normal)
-                Text(text = "Phan Quang Hoang", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                Text(text = "Phan Quang Hoang", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
             }
         },
         navigationIcon = {
@@ -101,7 +101,7 @@ fun Header() {
                 },
                 color = Color(0xFFe8eaee),
                 text = "\uD83D\uDC71\u200D♂\uFE0F", textAlign = TextAlign.Center,
-                fontSize = 18.sp
+                fontSize = 17.sp
             )
         },
         actions = {
