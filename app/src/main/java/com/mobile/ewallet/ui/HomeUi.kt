@@ -37,6 +37,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -60,11 +61,10 @@ fun <NavHostController> HomeUi(navController: NavHostController) {
                 Menu()
             }
             item {
-                Box(modifier = Modifier
-                    .fillMaxWidth(),
+                Box(modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.CenterStart) {
                     Text(modifier = Modifier.padding(horizontal = 15.dp),
-                        text = "My Pocket",
+                        text = stringResource(R.string.my_pocket),
                         fontSize = 18.sp,
                         textAlign = TextAlign.Left,
                         fontWeight = FontWeight.Medium
