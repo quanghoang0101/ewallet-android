@@ -45,12 +45,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.mobile.ewallet.R
 import com.mobile.ewallet.activity.NotificationActivity
 
 @Composable
-fun HomeUi(navController: NavHostController) {
+fun HomeUi() {
     val context = LocalContext.current
     Column {
         Header(onActionPress = {
@@ -93,13 +92,14 @@ fun Header(onActionPress: () -> Unit) {
         backgroundColor = MaterialTheme.colors.background,
         title = {
             Column {
-                Text(text = "Good Morning!", color = Color(0xFFb4abaa), fontSize = 13.sp, fontWeight = FontWeight.Normal)
-                Text(text = "Phan Quang Hoang", fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Text(text = stringResource(R.string.good_mornig), color = Color(0xFFb4abaa), fontSize = 13.sp, fontWeight = FontWeight.Normal)
+                Text(text = stringResource(R.string.username), fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             }
         },
         navigationIcon = {
             Text(modifier = Modifier
                 .padding(start = 25.dp)
+                .size(20.dp)
                 .drawBehind {
                     drawCircle(
                         color = Color(0xFFe8eaed),
@@ -108,7 +108,8 @@ fun Header(onActionPress: () -> Unit) {
                 },
                 color = Color(0xFFe8eaee),
                 text = "\uD83D\uDC71\u200D♂\uFE0F", textAlign = TextAlign.Center,
-                fontSize = 17.sp
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
             )
         },
         actions = {
@@ -145,7 +146,7 @@ fun Menu() {
                             tint = Color.White,
                             contentDescription = "")
                     }
-                    Text(text = it.title,
+                    Text(text = stringResource(it.resourceId) ,
                         modifier = Modifier.padding(10.dp),
                         textAlign = TextAlign.Center,
                         fontSize = 16.sp,
@@ -237,11 +238,11 @@ fun PocketGrid() {
     }
 }
 
-sealed class Menu(val title: String, @DrawableRes val icon: Int) {
-    data object Transfer: Menu("Transfer", R.drawable.ic_transfer)
-    data object Scan: Menu("Scan", R.drawable.ic_scan)
-    data object TopUp: Menu("Top-up", R.drawable.ic_topup)
-    data object More: Menu("More", R.drawable.ic_more)
+sealed class Menu(val resourceId: Int, @DrawableRes val icon: Int) {
+    data object Transfer: Menu(R.string.transfer, R.drawable.ic_transfer)
+    data object Scan: Menu(R.string.scan, R.drawable.ic_scan)
+    data object TopUp: Menu(R.string.top_up, R.drawable.ic_topup)
+    data object More: Menu(R.string.more, R.drawable.ic_more)
 }
 
 sealed class Pocket(val icon: String, val title: String, val money: String) {

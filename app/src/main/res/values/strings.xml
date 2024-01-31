@@ -7,5 +7,15 @@
     <string name="statistic">Statistic</string>
     <string name="voucher">Voucher</string>
     <string name="setting">Setting</string>
+
+    <!-- Home Menu -->
+    <string name="transfer">Transfer</string>
+    <string name="scan">Scan</string>
+    <string name="top_up">Top-up</string>
+    <string name="more">More</string>
+
+    <!-- Others -->
     <string name="my_pocket">My Pocket</string>
+    <string name="good_mornig">Good Morning!</string>
+    <string name="username">Phan Quang Hoàng</string>
 </resources>

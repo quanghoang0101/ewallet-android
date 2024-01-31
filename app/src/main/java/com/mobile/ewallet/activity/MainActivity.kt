@@ -22,7 +22,7 @@ class MainActivity : ElectrodeCoreActivity(), ElectrodeMiniAppFragment.OnFragmen
         setContent {
             Surface(
                 modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background
+                color = MaterialTheme.colors.background,
             ) {
                 FragmentContainer(
                     modifier = Modifier.fillMaxSize(),

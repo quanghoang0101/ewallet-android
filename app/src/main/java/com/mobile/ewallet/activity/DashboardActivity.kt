@@ -73,10 +73,10 @@ fun ContentApp() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 NavHost(navController, startDestination = Screen.Home.route, Modifier.padding(padding)) {
-                    composable(Screen.Home.route) { HomeUi(navController) }
-                    composable(Screen.Wallet.route) { WalletUi(navController) }
-                    composable(Screen.Statistic.route) { StatisticUi(navController) }
-                    composable(Screen.Setting.route) { SettingUi(navController) }
+                    composable(Screen.Home.route) { HomeUi() }
+                    composable(Screen.Wallet.route) { WalletUi() }
+                    composable(Screen.Statistic.route) { StatisticUi() }
+                    composable(Screen.Setting.route) { SettingUi() }
                 }
             }
         }
@@ -113,9 +113,9 @@ fun RowScope.AddItem(screen: Screen,  navController: NavHostController) {
                     saveState = true
                 }
                 // Avoid multiple copies of the same destination when
-                // reselecting the same item
+                // re-selecting the same item
                 launchSingleTop = true
-                // Restore state when reselecting a previously selected item
+                // Restore state when re-selecting a previously selected item
                 restoreState = true
             }
         },
@@ -124,19 +124,19 @@ fun RowScope.AddItem(screen: Screen,  navController: NavHostController) {
 
 }
 @Composable
-fun <NavHostController> StatisticUi(navController: NavHostController) {
+fun StatisticUi() {
     Column {
     }
 }
 
 @Composable
-fun SettingUi(navController: NavHostController) {
+fun SettingUi() {
     Column {
     }
 }
 
 @Composable
-fun <NavHostController> WalletUi(navHostController: NavHostController) {
+fun WalletUi() {
     Column {
     }
 }
