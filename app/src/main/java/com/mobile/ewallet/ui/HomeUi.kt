@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +16,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -42,7 +43,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -161,57 +161,75 @@ fun Menu() {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PocketGrid() {
-    val items = listOf(
+    val pockets = listOf(
         Pocket.Travel, Pocket.Investment, Pocket.Married, Pocket.Car, Pocket.Kid, Pocket.House,
         Pocket.Pregnant, Pocket.School, Pocket.Health, Pocket.Party, Pocket.Technology
     )
-    val itemSize: Dp = (LocalConfiguration.current.screenWidthDp.dp / 2) - 45.dp
-    FlowRow(maxItemsInEachRow = 2, horizontalArrangement = Arrangement.Absolute.Left){
-        items.forEach {
-            Box(modifier = Modifier.padding(10.dp)) {
-                Box(
-                    modifier = Modifier
-                        .border(
-                            0.5.dp,
-                            Color.LightGray,
-                            RoundedCornerShape(8.dp),
-                        )
-                        .padding(10.dp)
-                        .width(itemSize)
-                        .height(itemSize),
-                ) {
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(modifier = Modifier
-                                .padding(16.dp)
+    val padding = 16
+    val paddingInside = 10
+    val columns = 2
+    val itemSizeHeight = (LocalConfiguration.current.screenWidthDp / 2) - padding*3
+    val numRows = Math.ceil((pockets.size.toDouble()/columns))
+    val height = numRows*itemSizeHeight + numRows*padding*2 + numRows*paddingInside
+
+    LazyVerticalGrid(columns = GridCells.Fixed(columns),
+        modifier = Modifier.height(height.dp),
+        contentPadding = PaddingValues(padding.dp),
+        horizontalArrangement = Arrangement.spacedBy(padding.dp),
+        verticalArrangement = Arrangement.spacedBy(padding.dp),
+        userScrollEnabled = false) {
+        items(pockets.size) { index ->
+            val pocket = pockets[index]
+            Box(
+                modifier = Modifier
+                    .border(
+                        0.5.dp,
+                        Color.LightGray,
+                        RoundedCornerShape(8.dp),
+                    )
+                    .padding(paddingInside.dp)
+                    .fillMaxWidth()
+                    .height(itemSizeHeight.dp)
+            ) {
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            modifier = Modifier
+                                .padding(padding.dp)
                                 .drawBehind {
                                     drawCircle(
                                         color = Color(0xFFe8eaee),
                                         radius = this.size.maxDimension
                                     )
                                 },
-                                color = Color(0xFFe8eaee),
-                                text = it.icon,
-                                textAlign = TextAlign.Center,
-                                fontSize = 15.sp
-                            )
-                            Spacer(modifier = Modifier.weight(1f))
-                            Icon(Icons.Default.MoreVert, contentDescription = "", tint = Color.LightGray)
-
-                        }
+                            color = Color(0xFFe8eaee),
+                            text = pocket.icon,
+                            textAlign = TextAlign.Center,
+                            fontSize = 20.sp
+                        )
                         Spacer(modifier = Modifier.weight(1f))
-                        Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                            Text(modifier = Modifier.padding(vertical = 10.dp),
-                                text = it.title,
-                                textAlign = TextAlign.Left,
-                                fontSize = 17.sp, color = Color(0xFF939db3)
-                            )
-                            Text(text = it.money,
-                                textAlign = TextAlign.Left,
-                                fontSize = 25.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
+                        Icon(
+                            Icons.Default.MoreVert,
+                            contentDescription = "",
+                            modifier = Modifier.rotate(90F),
+                            tint = Color.LightGray
+                        )
+
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Column(modifier = Modifier.padding(vertical = 10.dp)) {
+                        Text(
+                            modifier = Modifier.padding(vertical = 10.dp),
+                            text = pocket.title,
+                            textAlign = TextAlign.Left,
+                            fontSize = 17.sp, color = Color(0xFF939db3)
+                        )
+                        Text(
+                            text = pocket.money,
+                            textAlign = TextAlign.Left,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium
+                        )
                     }
                 }
             }

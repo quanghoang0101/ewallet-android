@@ -23,7 +23,7 @@ abstract class ElectrodeCoreActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
-        mReactActivityDelegate?.onResume()
+        //mReactActivityDelegate?.onResume()
     }
 
     override fun onPause() {
@@ -33,7 +33,7 @@ abstract class ElectrodeCoreActivity : AppCompatActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
-        mReactActivityDelegate?.onDestroy()
+        //mReactActivityDelegate?.onDestroy()
     }
 
     @Deprecated("Deprecated in Java")
