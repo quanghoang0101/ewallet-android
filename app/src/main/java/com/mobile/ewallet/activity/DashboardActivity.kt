@@ -74,9 +74,9 @@ fun ContentApp() {
             ) {
                 NavHost(navController, startDestination = Screen.Home.route, Modifier.padding(padding)) {
                     composable(Screen.Home.route) { HomeUi(navController) }
-                    composable(Screen.Wallet.route) { Wallet(navController) }
-                    composable(Screen.Statistic.route) { Statistic(navController) }
-                    composable(Screen.Setting.route) { Setting(navController) }
+                    composable(Screen.Wallet.route) { WalletUi(navController) }
+                    composable(Screen.Statistic.route) { StatisticUi(navController) }
+                    composable(Screen.Setting.route) { SettingUi(navController) }
                 }
             }
         }
@@ -124,19 +124,19 @@ fun RowScope.AddItem(screen: Screen,  navController: NavHostController) {
 
 }
 @Composable
-fun <NavHostController> Statistic(navController: NavHostController) {
+fun <NavHostController> StatisticUi(navController: NavHostController) {
     Column {
     }
 }
 
 @Composable
-fun Setting(navController: NavHostController) {
+fun SettingUi(navController: NavHostController) {
     Column {
     }
 }
 
 @Composable
-fun <NavHostController> Wallet(navHostController: NavHostController) {
+fun <NavHostController> WalletUi(navHostController: NavHostController) {
     Column {
     }
 }

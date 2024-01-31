@@ -3,39 +3,37 @@ package com.mobile.ewallet.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.FrameLayout
-import android.widget.LinearLayout
-import androidx.fragment.app.FragmentTransaction
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
 import com.auth.ern.api.AuthUserApi
 import com.mobile.ewallet.fragment.AuthMiniAppFragment
 import com.mobile.ewallet.fragment.ElectrodeMiniAppFragment
+import com.mobile.ewallet.ui.FragmentContainer
 import java.util.UUID
 
 class MainActivity : ElectrodeCoreActivity(), ElectrodeMiniAppFragment.OnFragmentInteractionListener {
-    private val CONTENT_VIEW_ID = 10101010
     private var authUserIdentifier: UUID? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val frame = FrameLayout(this)
-        frame.id = CONTENT_VIEW_ID
-        setContentView(
-            frame,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT
-            )
-        )
-
-        if (savedInstanceState == null) {
-            val newFragment: ElectrodeMiniAppFragment = AuthMiniAppFragment.newInstance()
-            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-            ft.add(CONTENT_VIEW_ID, newFragment).commit()
+        super.onCreate(null);
+        setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                FragmentContainer(
+                    modifier = Modifier.fillMaxSize(),
+                    fragmentManager = supportFragmentManager,
+                    commit = {add(it, AuthMiniAppFragment.newInstance())}
+                )
+            }
         }
 
         authUserIdentifier = AuthUserApi.events().addAuthUserEventEventListener {
             val intent = Intent(this, DashboardActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent);
         }
     }

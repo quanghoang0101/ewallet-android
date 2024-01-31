@@ -39,7 +39,7 @@ abstract class ElectrodeCoreActivity : AppCompatActivity(),
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
-        mReactActivityDelegate?.onBackPressed()
+        //mReactActivityDelegate?.onBackPressed()
     }
 
     override val electrodeDelegate: ElectrodeReactActivityDelegate
