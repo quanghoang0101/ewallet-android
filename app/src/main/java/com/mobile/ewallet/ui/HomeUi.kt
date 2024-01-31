@@ -1,5 +1,6 @@
 package com.mobile.ewallet.ui
 
+import android.content.Intent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,12 +45,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.mobile.ewallet.R
+import com.mobile.ewallet.activity.NotificationActivity
 
 @Composable
-fun <NavHostController> HomeUi(navController: NavHostController) {
+fun HomeUi(navController: NavHostController) {
+    val context = LocalContext.current
     Column {
-        Header()
+        Header(onActionPress = {
+            context.startActivity(Intent(context, NotificationActivity::class.java))
+        })
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -80,7 +87,7 @@ fun <NavHostController> HomeUi(navController: NavHostController) {
 }
 
 @Composable
-fun Header() {
+fun Header(onActionPress: () -> Unit) {
     TopAppBar(
         elevation = 0.5.dp,
         backgroundColor = MaterialTheme.colors.background,
@@ -105,7 +112,7 @@ fun Header() {
             )
         },
         actions = {
-            IconButton(onClick = {/* Do Something*/ }) {
+            IconButton(onClick = onActionPress) {
                 Icon(Icons.Outlined.Notifications, null)
             }
         }

@@ -25,10 +25,10 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
          * @return String
          */
         get() {
-            if (null == arguments || null == arguments!!.getString(KEY_MINI_APP_NAME)) {
+            if (null == arguments || null == arguments?.getString(KEY_MINI_APP_NAME)) {
                 throw IllegalArgumentException("Arguments missing MiniApp name")
             }
-            return arguments!!.getString(KEY_MINI_APP_NAME)
+            return arguments?.getString(KEY_MINI_APP_NAME)
         }
     private val props: Bundle?
         /**
@@ -39,15 +39,15 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
          */
         get() {
             return if (ernRoute != null) {
-                ernRoute!!.toBundle()
+                ernRoute?.toBundle()
             } else null
         }
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (arguments != null && arguments!!.getBundle(ERN_ROUTE) != null) {
-            ernRoute = ErnRoute(arguments!!.getBundle(ERN_ROUTE)!!)
+        if (arguments != null && arguments?.getBundle(ERN_ROUTE) != null) {
+            ernRoute = ErnRoute(arguments?.getBundle(ERN_ROUTE)!!)
         } else {
             Logger.w(TAG, "Unable to retrieve Route object")
         }
@@ -57,9 +57,9 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        return if (this.activity != null && !this.activity!!.isFinishing) {
-            Log.i(TAG, "Inflate view for MiniApp: " + miniAppName)
-            mElectrodeReactActivityListener!!.electrodeDelegate!!.createReactRootView(
+        return if (this.activity != null && !this.requireActivity().isFinishing) {
+            Log.i(TAG, "Inflate view for MiniApp: $miniAppName")
+            mElectrodeReactActivityListener?.electrodeDelegate?.createReactRootView(
                 miniAppName!!,
                 props
             )
@@ -72,15 +72,13 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
     @CallSuper
     override fun onResume() {
         super.onResume()
-//        if (ernRoute!!.navBar != null) {
-//            mElectrodeReactActivityListener!!.updateTitle(ernRoute!!.navBar!!.title)
-//        }
+        if (ernRoute?.navBar != null) {
+            ernRoute?.navBar?.title?.let { mElectrodeReactActivityListener?.updateTitle(it) }
+        }
     }
 
     fun onButtonPressed(uri: Uri?) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
+        mListener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -124,7 +122,7 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
     companion object {
         const val KEY_MINI_APP_NAME = "MiniAppName"
         private val TAG = ElectrodeMiniAppFragment::class.java.simpleName
-        protected fun putMiniAppNameArgument(route: ErnRoute, fragment: ElectrodeMiniAppFragment) {
+        fun putMiniAppNameArgument(route: ErnRoute, fragment: ElectrodeMiniAppFragment) {
             val args = Bundle()
             args.putString(KEY_MINI_APP_NAME, route.path)
             args.putBundle(ERN_ROUTE, route.toBundle())
