@@ -13,5 +13,5 @@ class NotificationMiniAppFragment: ElectrodeMiniAppFragment() {
         }
     }
 
-    override val miniAppName: String = MiniAppsConfig.MiniApps.MainMiniapp.name
+    override val miniAppName: String = MiniAppsConfig.MiniApps.NotificationMiniapp.name
 }

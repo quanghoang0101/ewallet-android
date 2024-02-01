@@ -48,9 +48,6 @@ class MainActivity : ElectrodeCoreActivity(), ElectrodeMiniAppFragment.OnFragmen
             AuthUserApi.events().removeAuthUserEventEventListener(uuid)
         }
     }
-    override fun updateTitle(title: String) {
-        TODO("Not yet implemented")
-    }
 
     override fun onFragmentInteraction(uri: Uri?) {
         throw IllegalStateException("TODO: handle fragment interactions");

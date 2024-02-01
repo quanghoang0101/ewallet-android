@@ -72,9 +72,6 @@ abstract class ElectrodeMiniAppFragment() : Fragment() {
     @CallSuper
     override fun onResume() {
         super.onResume()
-        if (ernRoute?.navBar != null) {
-            ernRoute?.navBar?.title?.let { mElectrodeReactActivityListener?.updateTitle(it) }
-        }
     }
 
     fun onButtonPressed(uri: Uri?) {

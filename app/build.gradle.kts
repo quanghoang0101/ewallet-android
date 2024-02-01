@@ -75,10 +75,10 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.6.0")
     implementation("androidx.navigation:navigation-compose:2.7.6")
     implementation("androidx.compose.material:material:1.6.0")
-    implementation("androidx.compose.ui:ui-viewbinding:1.3.2")
+    implementation("androidx.compose.ui:ui-viewbinding:1.6.0")
 
     // Own dependencies
-    implementation("com.github.quanghoang0101:ewallet-container-android:1.0.2")
+    implementation("com.github.quanghoang0101:ewallet-container-android:1.0.3")
 
     // Test
     testImplementation("junit:junit:4.13.2")
